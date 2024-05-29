@@ -9,4 +9,12 @@ router.get('/:post', postsController.show)
 
 router.post('/', validateRequest, postsController.store);
 
+// to update a post
+router.put('/:post', validateRequest, postsController.update)
+
+
+// to delete a post
+router.delete('/:post', postsController.remove)
+
+
 module.exports = router;

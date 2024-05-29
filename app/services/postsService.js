@@ -1,48 +1,90 @@
-const ULID = require('ulid')
-const database = require('../../config/database');
-const sluggify = require('../utilities/sluggify');
-const NotFound = require('./../errors/NotFound')
-const { format } = require('date-fns');
+const ULID = require("ulid");
+const database = require("../../config/database");
+const sluggify = require("../utilities/sluggify");
+const NotFound = require("./../errors/NotFound");
+const { format } = require("date-fns");
 
 async function getPosts() {
-    const collection = await database.connect('posts');
+  const collection = await database.connect("posts");
 
-    return await collection.find({}).toArray()
+  return await collection.find({}).toArray();
 }
 
 async function getPost(identifier) {
-    const collection = await database.connect('posts');
+  const collection = await database.connect("posts");
 
-    const result = await collection.findOne({'id': identifier});
+  const result = await collection.findOne({ id: identifier });
 
-    if (result === null) {
-        throw new NotFound("Post not found.");
-    }
+  if (result === null) {
+    throw new NotFound("Post not found.");
+  }
 
-    return result;
+  return result;
 }
 
 async function createPost(postData) {
-    const collection = await database.connect('posts');
-    
-    const today = new Date();
+  const collection = await database.connect("posts");
 
-    const result = await collection.insertOne({
-        id: ULID.ulid(),
+  const today = new Date();
+
+  const result = await collection.insertOne({
+    id: ULID.ulid(),
+    title: postData.title,
+    slug: sluggify(postData.title),
+    author: postData.author,
+    body: postData.body,
+    is_featured: postData.is_featured ?? false,
+    created_at: format(today, "yyyy-MM-dd"),
+    category: postData.category ?? "Uncategorized",
+  });
+
+  return result;
+}
+
+// update post
+async function updatePost(identifier, postData) {
+  const collection = await database.connect("posts");
+
+  const result = await collection.findOne({ id: identifier });
+
+  if (result === null) {
+    throw new NotFound("Post not found.");
+  }
+
+  const dbResponse = await collection.updateOne(
+    { id: identifier },
+    {
+      $set: {
         title: postData.title,
         slug: sluggify(postData.title),
         author: postData.author,
         body: postData.body,
         is_featured: postData.is_featured ?? false,
-        created_at: format(today, 'yyyy-MM-dd'),
-        category: postData.category ?? "Uncategorized"
-    });
+        category: postData.category ?? "Uncategorized",
+      },
+    }
+  );
 
-    return result;
+  return dbResponse;
+}
+
+// delete post
+async function deletePost(identifier) {
+  const collection = await database.connect("posts");
+
+  const result = await collection.findOne({ id: identifier });
+
+  if (result === null) {
+    throw new NotFound("Post not found.");
+  }
+
+  return await collection.deleteOne({ id: identifier });
 }
 
 module.exports = {
-    getPosts,
-    getPost,
-    createPost
-}
+  getPosts,
+  getPost,
+  createPost,
+  updatePost,
+  deletePost,
+};

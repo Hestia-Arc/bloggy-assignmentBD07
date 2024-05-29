@@ -12,6 +12,9 @@ if (! host || ! port || ! protocol || ! databaseName) {
     throw new Error('One or more required environment variables (DB_HOST, DB_PORT, DB_CONNECTION, DB_DATABASE) are missing or empty.');
 }
 
+// // The MongoDB connection string for a local server would typically take the form of mongodb://localhost:27017/<database>,
+// //  where <database> is the name of the database you want to connect to. If you are using a different port for MongoDB,
+// //  you should replace 27017 with the port number you are using.
 let databaseString = `${protocol}://${host}:${port}`
 
 const client = new MongoClient(databaseString);
