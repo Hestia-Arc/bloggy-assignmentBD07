@@ -12,11 +12,11 @@ This is a blog API built with Node.js, Express, and MongoDB. It allows users to 
 
 1.  **Download or Clone the Repository:**
 
-    - **Option 1: Download ZIP:** Visit the project repository on GitHub ([https://github.com/topics/express-blog](https://github.com/topics/express-blog)) and download the ZIP file.
+    - **Option 1: Download ZIP:** Visit the project repository on GitHub ([https://github.com/Hestia-Arc/bloggy-assignmentBD07](https://github.com/Hestia-Arc/bloggy-assignmentBD07)) and download the ZIP file.
     - **Option 2: Clone Repository:** If you're comfortable with Git, you can clone the repository using the following command in your terminal:
 
       ```bash
-      git clone https://github.com/simioluwatomi/express-blog.git
+      git clone https://github.com/Hestia-Arc/bloggy-assignmentBD07.git
       ```
 
 2.  **Install Dependencies:**
@@ -40,12 +40,23 @@ This is a blog API built with Node.js, Express, and MongoDB. It allows users to 
       mongod
       ```
 
-      This command will start and keep MongoDB server running
+      This command will start and keep MongoDB server running.
+
+    - Open another CMD and run this command to start interacting with the data in your MongoDB database.
+
+      ```cmd
+      mongosh
+      ```
+
+    - Create a database:
+     ```cmd
+     use <your_preferred_db_name>
+     ```
 
     - In your code editor terminal, run this command:
 
       ```cmd
-      mongosh <your_DB_NAME> < storage/seeder/index.js
+      mongosh <your_preferred_db_name> < storage/seeder/index.js
       ```
 
       This command insert blog posts in the file into your database.
